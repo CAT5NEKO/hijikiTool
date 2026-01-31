@@ -1,5 +1,18 @@
-.idea
-/.idea/
-jihoulog.txt
+*.exe
+*.exe~
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+.DS_Store
+Thumbs.db
 .env
-/.env/
+.env.*
+!.env.example
+
+# Logs
+*.log
+jihoulog.txt
+hijiki.log
