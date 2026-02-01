@@ -167,3 +167,45 @@ func TestScheduler_Config_FromConfigSource(t *testing.T) {
 	assert.Equal(t, "example.com", config.MisskeyHost)
 	assert.Equal(t, "test-token", config.MisskeyToken)
 }
+
+func TestScheduler_RunOnce_DoesNotPostOnStartupWhenNotScheduledTime(t *testing.T) {
+	clock := &FakeClock{currentTime: time.Date(2026, 2, 1, 15, 0, 0, 0, time.UTC)}
+	repo := NewFakePostRecordRepository()
+	poster := &FakePoster{}
+
+	job := scheduler.Job{
+		ID:       "morning-post",
+		Schedule: domain.NewDailySchedule(8, 0),
+		Content:  "Good morning!",
+	}
+
+	s := scheduler.New(clock, repo, poster, []scheduler.Job{job})
+	s.RunOnce()
+
+	assert.Equal(t, 0, poster.GetPostCount())
+}
+
+func TestScheduler_RunOnce_PostsOnlyAtScheduledTime(t *testing.T) {
+	clock := &FakeClock{currentTime: time.Date(2026, 2, 1, 7, 59, 0, 0, time.UTC)}
+	repo := NewFakePostRecordRepository()
+	poster := &FakePoster{}
+
+	job := scheduler.Job{
+		ID:       "morning-post",
+		Schedule: domain.NewDailySchedule(8, 0),
+		Content:  "Good morning!",
+	}
+
+	s := scheduler.New(clock, repo, poster, []scheduler.Job{job})
+
+	s.RunOnce()
+	assert.Equal(t, 0, poster.GetPostCount())
+
+	clock.currentTime = time.Date(2026, 2, 1, 8, 0, 0, 0, time.UTC)
+	s.RunOnce()
+	assert.Equal(t, 1, poster.GetPostCount())
+
+	clock.currentTime = time.Date(2026, 2, 1, 8, 30, 0, 0, time.UTC)
+	s.RunOnce()
+	assert.Equal(t, 1, poster.GetPostCount())
+}

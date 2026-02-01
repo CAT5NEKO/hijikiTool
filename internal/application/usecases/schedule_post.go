@@ -58,8 +58,14 @@ func (u *SchedulePostUseCase) ShouldExecuteNow(scheduleID string, schedule domai
 		return false
 	}
 
-	nextTime := schedule.NextTime(now.Add(-tolerance))
-	return u.isWithinTolerance(now, nextTime, tolerance)
+	scheduledTime := schedule.NextTime(now.Add(-tolerance * 2))
+
+	if scheduledTime.After(now) {
+		return false
+	}
+
+	elapsed := now.Sub(scheduledTime)
+	return elapsed >= 0 && elapsed <= tolerance
 }
 
 func (u *SchedulePostUseCase) isWithinTolerance(now, target time.Time, tolerance time.Duration) bool {
