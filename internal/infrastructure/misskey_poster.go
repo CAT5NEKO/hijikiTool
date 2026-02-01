@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/CAT5NEKO/hijikiTool/internal/application/ports"
 )
@@ -30,7 +31,7 @@ func NewMisskeyPoster(config ports.Config) ports.Poster {
 		token:      config.MisskeyToken,
 		visibility: config.Visibility,
 		localOnly:  config.LocalOnly,
-		httpClient: &http.Client{},
+		httpClient: &http.Client{Timeout: 30 * time.Second},
 	}
 }
 
