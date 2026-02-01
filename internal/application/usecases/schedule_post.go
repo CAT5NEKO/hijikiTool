@@ -67,11 +67,3 @@ func (u *SchedulePostUseCase) ShouldExecuteNow(scheduleID string, schedule domai
 	elapsed := now.Sub(scheduledTime)
 	return elapsed >= 0 && elapsed <= tolerance
 }
-
-func (u *SchedulePostUseCase) isWithinTolerance(now, target time.Time, tolerance time.Duration) bool {
-	diff := now.Sub(target)
-	if diff < 0 {
-		diff = -diff
-	}
-	return diff <= tolerance
-}
