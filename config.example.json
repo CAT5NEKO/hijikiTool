@@ -1,0 +1,43 @@
+{
+  "schedules": [
+    {
+      "id": "daily-hijiki",
+      "type": "daily",
+      "hour": 12,
+      "minute": 37,
+      "content": "人生のネタバレ「ひじき」っぽいな。"
+    },
+    {
+      "id": "daily-ohi",
+      "type": "daily",
+      "hour": 12,
+      "minute": 0,
+      "content": "おひ"
+    },
+    {
+      "id": "today-is-friday-in-california",
+      "type": "weekly",
+      "dayOfWeek": 1,
+      "hour": 9,
+      "minute": 0,
+      "content": "TODAY IS FRIDAY IN CALIFORNIA"
+    },
+    {
+      "id": "monthly-september",
+      "type": "monthly",
+      "dayOfMonth": 1,
+      "hour": 0,
+      "minute": 0,
+      "content": "セプテンバー！"
+    },
+    {
+      "id": "new-year-greeting",
+      "type": "yearly",
+      "month": 1,
+      "dayOfMonth": 1,
+      "hour": 0,
+      "minute": 0,
+      "content": "ミレニアム！本当かい？"
+    }
+  ]
+}
