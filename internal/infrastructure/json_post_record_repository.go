@@ -76,6 +76,10 @@ func (r *JSONPostRecordRepository) loadStore() (jsonRecordStore, error) {
 		return jsonRecordStore{Records: make(map[string]jsonRecord)}, err
 	}
 
+	if len(data) == 0 {
+		return jsonRecordStore{Records: make(map[string]jsonRecord)}, nil
+	}
+
 	if err := json.Unmarshal(data, &store); err != nil {
 		return jsonRecordStore{Records: make(map[string]jsonRecord)}, err
 	}

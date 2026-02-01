@@ -58,12 +58,13 @@ func (u *SchedulePostUseCase) ShouldExecuteNow(scheduleID string, schedule domai
 		return false
 	}
 
-	scheduledTime := schedule.NextTime(now.Add(-tolerance * 2))
+	startOfToday := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
+	todayScheduledTime := schedule.NextTime(startOfToday.Add(-time.Second))
 
-	if scheduledTime.After(now) {
+	if todayScheduledTime.After(now) {
 		return false
 	}
 
-	elapsed := now.Sub(scheduledTime)
+	elapsed := now.Sub(todayScheduledTime)
 	return elapsed >= 0 && elapsed <= tolerance
 }

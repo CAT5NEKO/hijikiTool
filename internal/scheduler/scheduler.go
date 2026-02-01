@@ -53,6 +53,8 @@ func (s *Scheduler) Run(ctx context.Context) {
 			sleepDuration = s.tolerance
 		}
 
+		log.Printf("Next wake up in %v", sleepDuration)
+
 		select {
 		case <-ctx.Done():
 			return
@@ -64,8 +66,11 @@ func (s *Scheduler) Run(ctx context.Context) {
 func (s *Scheduler) RunOnce() {
 	for _, job := range s.jobs {
 		if s.useCase.ShouldExecuteNow(job.ID, job.Schedule, s.tolerance) {
+			log.Printf("Executing job %s", job.ID)
 			if err := s.useCase.Execute(job.ID, job.Schedule, job.Content); err != nil {
 				log.Printf("Failed to execute job %s: %v", job.ID, err)
+			} else {
+				log.Printf("Successfully posted job %s", job.ID)
 			}
 		}
 	}
