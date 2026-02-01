@@ -34,7 +34,10 @@ func (r *JSONPostRecordRepository) Find(scheduleID string) (domain.PostRecord, e
 
 	store, err := r.loadStore()
 	if err != nil {
-		return domain.PostRecord{}, nil
+		if os.IsNotExist(err) {
+			return domain.PostRecord{}, nil
+		}
+		return domain.PostRecord{}, err
 	}
 
 	record, exists := store.Records[scheduleID]
@@ -49,7 +52,10 @@ func (r *JSONPostRecordRepository) Save(record domain.PostRecord) error {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
-	store, _ := r.loadStore()
+	store, err := r.loadStore()
+	if err != nil && !os.IsNotExist(err) {
+		return err
+	}
 	if store.Records == nil {
 		store.Records = make(map[string]jsonRecord)
 	}
