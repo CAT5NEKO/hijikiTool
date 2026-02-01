@@ -38,7 +38,7 @@ cp config.example.json config.json
 | `month` | yearly | 月（1-12） |
 | `content` | 必須 | 投稿内容 |
 
-投稿タイミング: スケジュール時刻から1分以内に投稿されます
+投稿タイミング: スケジュール時刻から1分以内に投稿されます  
 （許容時間: 1分）
 
 ## systemd（Linux）
